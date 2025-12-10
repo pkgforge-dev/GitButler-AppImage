@@ -12,7 +12,12 @@ echo "Installing debloated packages..."
 echo "---------------------------------------------------------------"
 get-debloated-pkgs --add-common --prefer-nano
 
-# Comment this out if you need an AUR package
+# attempt to fix the aur pacakge nor supporting aarch64
+if [ "$ARCH" = 'aarch64' ]; then
+	export PRE_BUILD_CMDS="
+		sed -i -e 's|amd64|arm64|' ./PKGBUILD
+	"
+fi
 make-aur-package gitbutler-bin
 
 # If the application needs to be manually built that has to be done down here
